@@ -14,7 +14,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   pinMode(resetBtn,INPUT_PULLUP);
-  simon.blinkLeds(250);
+  simon.blinkLeds();
   delay(500);
 }
 
@@ -29,8 +29,6 @@ void loop() {
 
   if (millis() - lastReset > resetTime && millis() - lastActive > timeout) {
     lastActive = millis();
-    digitalWrite(activeLed, LOW);
-    activeLed = ledPins[random(0, sizeof(ledPins))];
-    digitalWrite(activeLed, HIGH);
+    simon.newColorSequence();
   }
 }

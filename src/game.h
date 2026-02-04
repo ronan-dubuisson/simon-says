@@ -5,12 +5,20 @@
 
 class Game {
 private:
+  const int _sequenceOnTime = 500;
+  const int _blinkInterval = 250;
+
   byte _ledPins[4];
   byte _lastActiveLed;
+  int sequence[];
+
+  void _randomLed();
 public:
   Game(byte[], int);
-  void blinkLeds(int blinkRate);
-  void randomLed();
+  
+  void newColorSequence();
+  void blinkLeds();
+  void toggleSingleLed(byte);
   void powerOffAllLeds();
 };
 
