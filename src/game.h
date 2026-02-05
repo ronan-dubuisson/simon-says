@@ -26,6 +26,7 @@ public:
   void newColorSequence();
  
   boolean isPlayerTurn();
+  boolean isReset;
 };
 
 #endif

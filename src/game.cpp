@@ -70,6 +70,7 @@ void Game::resetGame() {
   _sequenceArray = SequenceArray(); // Reset the sequence array
   _powerOffAllLeds();
   startNewGame();
+  isReset = false;
 }
 
 /**

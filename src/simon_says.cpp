@@ -1,8 +1,8 @@
 #include "game.h"
 
 // pin assignments
-byte ledPins[4] = { 2, 3, 4, 5 };
-byte resetBtn = A1; //5 seconds reset wait time
+byte ledPins[4] = { 4, 5, 6, 7};
+byte resetBtn = 2; //5 seconds reset wait time
 
 //initialize game object
 Game simon(ledPins, sizeof(ledPins));
@@ -10,15 +10,18 @@ Game simon(ledPins, sizeof(ledPins));
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  pinMode(resetBtn,INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(resetBtn), [](){
+    // Interrupt service routine for reset button
+    simon.isReset = true;
+  }, HIGH);
+
   simon.startNewGame();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  if (analogRead(resetBtn) == 1023) {
-    Serial.println(analogRead(resetBtn));
+  if (simon.isReset) {
     simon.resetGame();
   }
 
