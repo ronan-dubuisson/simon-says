@@ -16,13 +16,15 @@ private:
 
   byte _randomLed();
   void _blinkLeds();
+  void _powerOffAllLeds();
+  void _toggleSingleLed(byte);
 public:
   Game(byte[], int);
   
   void startNewGame();
+  void resetGame();
   void newColorSequence();
-  void toggleSingleLed(byte);
-  void powerOffAllLeds();
+ 
   boolean isPlayerTurn();
 };
 

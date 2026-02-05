@@ -37,6 +37,24 @@ byte Game::_randomLed() {
 }
 
 /**
+  * public method to toggle a single led for a set time
+  */
+void Game::_toggleSingleLed(byte ledPin) {
+  digitalWrite(ledPin, HIGH);
+  delay(_sequenceDuration);
+  digitalWrite(ledPin, LOW);
+}
+
+/**
+ * public method to power off all leds in case of reset or end of game
+ */
+void Game::_powerOffAllLeds() {
+  for (byte led : _ledPins) {
+    digitalWrite(led, LOW);
+  }
+}
+
+/**
  * public method to start a new game
  */
 void Game::startNewGame() {
@@ -46,30 +64,21 @@ void Game::startNewGame() {
 }
 
 /**
+ * public method to reset the game
+ */
+void Game::resetGame() {
+  _sequenceArray = SequenceArray(); // Reset the sequence array
+  _powerOffAllLeds();
+  startNewGame();
+}
+
+/**
  * public method to start a new color sequence
  */
 void Game::newColorSequence() {
    _sequenceArray.addToSequence(_randomLed());
-   toggleSingleLed(_sequenceArray.getLastElement());
+   _toggleSingleLed(_sequenceArray.getLastElement());
    _isPlayerTurn = true;
-}
- 
-/**
-  * public method to toggle a single led for a set time
-  */
-void Game::toggleSingleLed(byte ledPin) {
-  digitalWrite(ledPin, HIGH);
-  delay(_sequenceDuration);
-  digitalWrite(ledPin, LOW);
-}
-
-/**
- * public method to power off all leds in case of reset or end of game
- */
-void Game::powerOffAllLeds() {
-  for (byte led : _ledPins) {
-    digitalWrite(led, LOW);
-  }
 }
 
 /**

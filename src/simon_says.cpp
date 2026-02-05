@@ -19,7 +19,7 @@ void loop() {
 
   if (analogRead(resetBtn) == 1023) {
     Serial.println(analogRead(resetBtn));
-    simon.powerOffAllLeds();
+    simon.resetGame();
   }
 
   if (!simon.isPlayerTurn()) {
