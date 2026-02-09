@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include <Arduino.h>
-#include "helpers/sequence.h"
+#include "sequence.h"
 
 class Game {
 private:
