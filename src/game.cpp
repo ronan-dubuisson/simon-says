@@ -75,4 +75,5 @@ void Game::newColorSequence() {
    _leds[_sequenceArray.getLastElement()].update(HIGH);
     delay(_sequenceDuration);
     _leds[_sequenceArray.getLastElement()].update(LOW);
+    currentState = PLAYER_TURN;
 }

@@ -27,6 +27,8 @@ void loop() {
     case Game::PLAYER_TURN:
     break;
     case Game::COMPUTER_TURN:
+        simon.newColorSequence();
+        simon.currentState = Game::PLAYER_TURN;
       break;
     case Game::END:
     break;
