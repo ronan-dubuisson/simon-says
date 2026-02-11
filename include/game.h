@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "sequence.h"
+#include "Led.h"
 
 class Game {
 private:
@@ -11,15 +12,14 @@ private:
   const int _blinkInterval = 250;
   const int _waitStartInterval = 2000;
 
-  byte _ledPins[4];
-  boolean _isPlayerTurn = false;
+  Led _leds[4];
+  boolean _isPlayerTurn;
 
-  byte _randomLed();
   void _blinkLeds();
   void _powerOffAllLeds();
   void _toggleSingleLed(byte);
 public:
-  Game(byte[], int);
+  Game(byte[]);
   
   void startNewGame();
   void resetGame();

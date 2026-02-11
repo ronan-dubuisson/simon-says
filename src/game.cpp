@@ -1,39 +1,26 @@
-#include <Arduino.h>
 #include "game.h"
+#include "Led.h"
 
-Game::Game(byte ledPins[], int nrOfLeds) {
-  for (int c = 0; c < nrOfLeds ; c++) {
-      Serial.println(ledPins[c]);
-    _ledPins[c] = ledPins[c];
-    pinMode(ledPins[c], OUTPUT);
-  }  
-}
+Game::Game(byte ledPins[]) :
+  _leds{Led(ledPins[0]), Led(ledPins[1]), Led(ledPins[2]), Led(ledPins[3])}{}
 
 /**
  * private method to blink all leds a certain amount of times for a visual effect at start or reset of the game
  */
 void Game::_blinkLeds() {
   for (int count = 0; count < 5; count++) {
-    for (byte led : _ledPins) {
-      digitalWrite(led, HIGH);
+    for (Led led : _leds) {
+      led.update(HIGH);
     }
 
     delay(_blinkInterval);
 
-    for (byte led : _ledPins) {
-      digitalWrite(led, LOW);
+    for (Led led : _leds) {
+      led.update(LOW);
     }
 
     delay(_blinkInterval);
   }
-}
-
-/**
- * private method to power on a random led for a set time for a new sequence
- */
-byte Game::_randomLed() {
-  //TODO: Return the random led to be stored, powering on of the led will be handled by another function
-  return _ledPins[random(0, sizeof(_ledPins))];
 }
 
 /**
@@ -49,8 +36,8 @@ void Game::_toggleSingleLed(byte ledPin) {
  * public method to power off all leds in case of reset or end of game
  */
 void Game::_powerOffAllLeds() {
-  for (byte led : _ledPins) {
-    digitalWrite(led, LOW);
+  for (Led led : _leds) {
+    led.update(LOW);
   }
 }
 
@@ -77,7 +64,7 @@ void Game::resetGame() {
  * public method to start a new color sequence
  */
 void Game::newColorSequence() {
-   _sequenceArray.addToSequence(_randomLed());
+   _sequenceArray.addToSequence((byte)random(0,4));
    _toggleSingleLed(_sequenceArray.getLastElement());
    _isPlayerTurn = true;
 }

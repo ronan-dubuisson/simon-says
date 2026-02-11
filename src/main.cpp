@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "game.h"
 
 // pin assignments
@@ -5,7 +6,7 @@ byte ledPins[4] = { 4, 5, 6, 7};
 byte resetBtn = 2; //5 seconds reset wait time
 
 //initialize game object
-Game simon(ledPins, sizeof(ledPins));
+Game simon(ledPins);
 
 void setup() {
   // put your setup code here, to run once:
