@@ -15,18 +15,20 @@ void setup() {
     // Interrupt service routine for reset button
     simon.isReset = true;
   }, HIGH);
-
-  simon.startNewGame();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  if (simon.isReset) {
-    simon.resetGame();
-  }
-
-  if (!simon.isPlayerTurn()) {
-    simon.newColorSequence();
+  switch(simon.currentState) {
+    case Game::START:
+      simon.startNewGame();
+      break;
+    case Game::PLAYER_TURN:
+    break;
+    case Game::COMPUTER_TURN:
+      break;
+    case Game::END:
+    break;
   }
 }

@@ -11,15 +11,22 @@ void Game::_blinkLeds() {
   for (int count = 0; count < 5; count++) {
     for (Led led : _leds) {
       led.update(HIGH);
-    }
+      delay(_blinkInterval);
+      led.update(LOW);
+    } 
+  }
 
-    delay(_blinkInterval);
+  delay (_blinkInterval + 200);
 
+  for (int count = 0; count < 3; count++) {
+    for (Led led : _leds) {
+      led.update(HIGH);
+    } 
+    delay(_blinkInterval + 200);
     for (Led led : _leds) {
       led.update(LOW);
-    }
-
-    delay(_blinkInterval);
+    } 
+    delay(_blinkInterval+ 200);
   }
 }
 
@@ -47,7 +54,7 @@ void Game::_powerOffAllLeds() {
 void Game::startNewGame() {
   _blinkLeds();
   delay(_waitStartInterval);
-  _isPlayerTurn = false;
+  currentState = COMPUTER_TURN;
 }
 
 /**
@@ -56,7 +63,7 @@ void Game::startNewGame() {
 void Game::resetGame() {
   _sequenceArray = SequenceArray(); // Reset the sequence array
   _powerOffAllLeds();
-  startNewGame();
+  currentState = START;
   isReset = false;
 }
 
@@ -65,13 +72,7 @@ void Game::resetGame() {
  */
 void Game::newColorSequence() {
    _sequenceArray.addToSequence((byte)random(0,4));
-   _toggleSingleLed(_sequenceArray.getLastElement());
-   _isPlayerTurn = true;
-}
-
-/**
- * public method to check if it's the player's turn
- */
-boolean Game::isPlayerTurn() {
-  return _isPlayerTurn;
+   _leds[_sequenceArray.getLastElement()].update(HIGH);
+    delay(_sequenceDuration);
+    _leds[_sequenceArray.getLastElement()].update(LOW);
 }
