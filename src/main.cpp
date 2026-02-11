@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "game.h"
 
 // pin assignments
@@ -5,7 +6,7 @@ byte ledPins[4] = { 4, 5, 6, 7};
 byte resetBtn = 2; //5 seconds reset wait time
 
 //initialize game object
-Game simon(ledPins, sizeof(ledPins));
+Game simon(ledPins);
 
 void setup() {
   // put your setup code here, to run once:
@@ -14,18 +15,20 @@ void setup() {
     // Interrupt service routine for reset button
     simon.isReset = true;
   }, HIGH);
-
-  simon.startNewGame();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  if (simon.isReset) {
-    simon.resetGame();
-  }
-
-  if (!simon.isPlayerTurn()) {
-    simon.newColorSequence();
+  switch(simon.currentState) {
+    case Game::START:
+      simon.startNewGame();
+      break;
+    case Game::PLAYER_TURN:
+    break;
+    case Game::COMPUTER_TURN:
+      break;
+    case Game::END:
+    break;
   }
 }

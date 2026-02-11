@@ -2,30 +2,30 @@
 #define GAME_H
 
 #include <Arduino.h>
-#include "helpers/sequence.h"
+#include "sequence/sequence.h"
+#include "Led.h"
 
 class Game {
 private:
   SequenceArray _sequenceArray;
   const int _sequenceDuration = 1000;
-  const int _blinkInterval = 250;
+  const int _blinkInterval = 70;
   const int _waitStartInterval = 2000;
 
-  byte _ledPins[4];
-  boolean _isPlayerTurn = false;
+  Led _leds[4];
 
-  byte _randomLed();
   void _blinkLeds();
   void _powerOffAllLeds();
   void _toggleSingleLed(byte);
 public:
-  Game(byte[], int);
+  Game(byte[]);
+  enum State { START, PLAYER_TURN, COMPUTER_TURN, END };
+  State currentState = START;
   
   void startNewGame();
   void resetGame();
   void newColorSequence();
- 
-  boolean isPlayerTurn();
+
   boolean isReset;
 };
 
