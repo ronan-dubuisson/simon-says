@@ -1,8 +1,12 @@
 #include "game.h"
 #include "Led.h"
 
-Game::Game(byte ledPins[]) :
-  _leds{Led(ledPins[0]), Led(ledPins[1]), Led(ledPins[2]), Led(ledPins[3])}{}
+Game::Game(byte ledPins[], byte playerInputPin) :
+  _leds{Led(ledPins[0]), Led(ledPins[1]), Led(ledPins[2]), Led(ledPins[3])},
+  playerInput(playerInputPin) 
+{
+  ;
+}
 
 /**
  * private method to blink all leds a certain amount of times for a visual effect at start or reset of the game
@@ -54,7 +58,6 @@ void Game::_powerOffAllLeds() {
 void Game::startNewGame() {
   _blinkLeds();
   delay(_waitStartInterval);
-  currentState = COMPUTER_TURN;
 }
 
 /**
@@ -63,7 +66,6 @@ void Game::startNewGame() {
 void Game::resetGame() {
   _sequenceArray = SequenceArray(); // Reset the sequence array
   _powerOffAllLeds();
-  currentState = START;
   isReset = false;
 }
 
@@ -75,5 +77,4 @@ void Game::newColorSequence() {
    _leds[_sequenceArray.getLastElement()].update(HIGH);
     delay(_sequenceDuration);
     _leds[_sequenceArray.getLastElement()].update(LOW);
-    currentState = PLAYER_TURN;
 }

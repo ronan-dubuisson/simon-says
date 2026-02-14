@@ -2,19 +2,20 @@
 #include "game.h"
 
 // pin assignments
+byte playerInputPin = A0;
 byte ledPins[4] = { 4, 5, 6, 7};
 byte resetBtn = 2; //5 seconds reset wait time
 
 //initialize game object
-Game simon(ledPins);
+Game simon(ledPins, playerInputPin);
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  attachInterrupt(digitalPinToInterrupt(resetBtn), [](){
-    // Interrupt service routine for reset button
-    simon.isReset = true;
-  }, HIGH);
+  // attachInterrupt(digitalPinToInterrupt(resetBtn), [](){
+  //   // Interrupt service routine for reset button
+  //   simon.currentState = Game::START;
+  // }, HIGH);
 }
 
 void loop() {
@@ -23,8 +24,14 @@ void loop() {
   switch(simon.currentState) {
     case Game::START:
       simon.startNewGame();
+      simon.currentState = Game::COMPUTER_TURN;
       break;
     case Game::PLAYER_TURN:
+      simon.playerInput.analogRead();
+      if(simon.playerInput.getValue() >0){
+        Serial.println("Player input detected, value: " + String(simon.playerInput.getValue()));
+        simon.currentState = Game::COMPUTER_TURN;
+      }
     break;
     case Game::COMPUTER_TURN:
         simon.newColorSequence();
