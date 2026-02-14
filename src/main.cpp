@@ -27,7 +27,7 @@ void loop() {
       simon.currentState = Game::COMPUTER_TURN;
       break;
     case Game::PLAYER_TURN:
-      simon.playerInput.analogRead();
+      simon.playerInput.aRead();
       if(simon.playerInput.getValue() >0){
         Serial.println("Player input detected, value: " + String(simon.playerInput.getValue()));
         simon.currentState = Game::COMPUTER_TURN;

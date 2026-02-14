@@ -13,15 +13,10 @@ protected:
     // debounce variables for input pins
     unsigned long _debounceMs = 50;
     unsigned long _lastDebounceTime = 0;
-    int _lastDebounceValue = 0;
+    int _lastDebounceState = 0;
 
     // last stable value for input pins
-    int _lastValue = 0;
-
-    // variables for averaging multiple readings to reduce noise
-    const static int _numberOfReadings = 5;
-    int _readings[_numberOfReadings];
-    int _averageValue = 0;
+    int _lastState = 0;
     
     void _updateAverage(int newValue) {
         // Shift readings to the left
@@ -44,17 +39,20 @@ public:
     DigitalPin(byte pinNumber, byte mode) : _pinNumber(pinNumber), _mode(mode) {
         pinMode(_pinNumber, _mode);
 
+        //initializing input pins with value LOW per default
         if(_mode != OUTPUT){
-            _lastValue = 0;
+            _lastValue = LOW;
         }
     }
 
+    //Update the output value of a digital pin
     void update(byte outputValue) {
         digitalWrite(_pinNumber, outputValue);
     }
 
-    void analogRead() {
-        _updateAverage(analogRead(_pinNumber));
+    //Read value for digital pins having initialized with input modes
+    void read() {
+        _updateAverage(digitalRead(_pinNumber));
 
         if (_averageValue != _lastDebounceValue) {
             Serial.println("Value changed, starting debounce timer");
@@ -64,11 +62,12 @@ public:
 
         if ((millis() - _lastDebounceTime) > _debounceMs) {
             if (_lastDebounceValue != _lastValue) {
-                _lastValue = currentvalue;
+                _lastValue = _averageValue;
             }
         }
     }
 
+    //Retrieving value for input mode pins
     int getValue() {
         return _lastValue;
     }
