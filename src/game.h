@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "sequence/sequence.h"
 #include "Led.h"
+#include "VoltageDividerInputDetection.h"
 
 class Game {
 private:
@@ -18,9 +19,11 @@ private:
   void _powerOffAllLeds();
   void _toggleSingleLed(byte);
 public:
-  Game(byte[]);
+  Game(byte[], byte);
   enum State { START, PLAYER_TURN, COMPUTER_TURN, END };
   State currentState = START;
+
+  VoltageDividerInputDetection _playerInput;
   
   void startNewGame();
   void resetGame();
