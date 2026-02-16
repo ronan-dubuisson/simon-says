@@ -1,11 +1,12 @@
 #include "game.h"
 #include "Led.h"
 
+int dividerResistors[] = {3000, 6800, 22000};
+
 Game::Game(byte ledPins[], byte playerInputPin) :
   _leds{Led(ledPins[0]), Led(ledPins[1]), Led(ledPins[2]), Led(ledPins[3])},
-  playerInput(playerInputPin) 
+  _playerInput(playerInputPin, 10000, dividerResistors, sizeof(dividerResistors) / sizeof(dividerResistors[0]) + 1)
 {
-  ;
 }
 
 /**

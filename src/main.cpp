@@ -1,12 +1,16 @@
 #include <Arduino.h>
 #include "game.h"
+#include "VoltageDividerInputDetection.h"
 
 // pin assignments
 byte playerInputPin = A0;
 byte ledPins[4] = { 4, 5, 6, 7};
 byte resetBtn = 2; //5 seconds reset wait time
 
-//initialize game object
+//voltageDivider transistors
+int pullDownResistor = 10000;
+
+//initialize libraries
 Game simon(ledPins, playerInputPin);
 
 void setup() {
@@ -23,15 +27,12 @@ void loop() {
 
   switch(simon.currentState) {
     case Game::START:
+    Serial.println("Start Game");
       simon.startNewGame();
       simon.currentState = Game::COMPUTER_TURN;
       break;
     case Game::PLAYER_TURN:
-      simon.playerInput.aRead();
-      if(simon.playerInput.getValue() >0){
-        Serial.println("Player input detected, value: " + String(simon.playerInput.getValue()));
-        simon.currentState = Game::COMPUTER_TURN;
-      }
+      simon._playerInput.read();
     break;
     case Game::COMPUTER_TURN:
         simon.newColorSequence();

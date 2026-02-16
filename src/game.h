@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "sequence/sequence.h"
 #include "Led.h"
-#include "PushButton.h"
+#include "VoltageDividerInputDetection.h"
 
 class Game {
 private:
@@ -23,8 +23,7 @@ public:
   enum State { START, PLAYER_TURN, COMPUTER_TURN, END };
   State currentState = START;
 
-  PushButton playerInput;
-
+  VoltageDividerInputDetection _playerInput;
   
   void startNewGame();
   void resetGame();
