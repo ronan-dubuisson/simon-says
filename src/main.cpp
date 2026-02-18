@@ -2,25 +2,30 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include "game.h"
 #include "VoltageDividerInputDetection.h"
 #include "states/States.h"
+#include "Led.h"
+#include "ledLabels/ledLabels.h"
 
 const int SCREEN_WIDTH = 128 ;// OLED display width, in pixels
 const int SCREEN_HEIGHT = 64 ;// OLED display height, in pixels
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1); // -1 means no reset pin
 
-// pin assignments
-byte playerInputPin = A0;
-byte ledPins[4] = { 4, 5, 6, 7};
+// game leds intialization
+Led leds[4] = {
+  Led(4, LedLabels::RED),
+  Led(5, LedLabels::GREEN),
+  Led(6, LedLabels::BLUE),
+  Led(7, LedLabels::YELLOW)
+};
+
+//voltage divider input detection initialization
+VoltageDividerInputDetection vd(A0, 10000, );
 byte resetBtn = 2; //5 seconds reset wait time
 States state;
 
 //voltageDivider transistors
 int pullDownResistor = 10000;
-
-//initialize libraries
-Game simon(ledPins, playerInputPin);
 
 void setup() {
   // put your setup code here, to run once:

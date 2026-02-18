@@ -3,13 +3,14 @@
 
 #include <Arduino.h>
 #include "DigitalPin.h"
+#include "ledLabels/ledLabels.h"
 
 class Led : public DigitalPin<Led>{
     public:
-        Led(byte, String);
-        String getLabel();
+        Led(byte, LedLabels);
+        LedLabels getLabel();
     private:
-        String _label;
+        LedLabels _label;
 };
 
 
