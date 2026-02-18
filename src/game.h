@@ -20,8 +20,6 @@ private:
   void _toggleSingleLed(byte);
 public:
   Game(byte[], byte);
-  enum State { START, PLAYER_TURN, COMPUTER_TURN, END };
-  State currentState = START;
 
   VoltageDividerInputDetection _playerInput;
   
