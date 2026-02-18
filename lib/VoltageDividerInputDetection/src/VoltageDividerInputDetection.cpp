@@ -5,9 +5,10 @@ _analogInput(analogInput),
 _pullDownResistorValue (pullDownResistor),
 _dividerResistorValues(dividerResistors),
 _nrOfButtons(nrOfButtons)
+
 {
 
-    _buttons = new Buttons[nrOfButtons];
+    _buttons = new Button[nrOfButtons];
     //0 - 1023 analog input read range
     //R2 = target resistor
     //Rg = pull down resistor
@@ -32,13 +33,17 @@ _nrOfButtons(nrOfButtons)
     }
 }
 
+/**
+ * Read the pressed button
+ */
 void VoltageDividerInputDetection::read(){
     int currentValue = analogRead(_analogInput);
 
     for (int i = 0; i < _nrOfButtons; i++){
-        Buttons button = _buttons[i];
+        Button button = _buttons[i];
         if(currentValue >= button.lowerThresholdValue && currentValue <= button.upperThresholdValue){
-            _lastPressedButton = i;
+            _lastPressedButton = button;
+            _hasInput = true;
             Serial.print("Button: ");
             Serial.print(button.label);
             Serial.println(" has been pressed!");
@@ -47,7 +52,18 @@ void VoltageDividerInputDetection::read(){
     }
 }
 
-/** Printer thresholdvalues for the buttons in the voltage divider for testing purposes */
+/**
+ * Get the last pressed button
+ */
+Button VoltageDividerInputDetection::getPressedButton(){
+    return _lastPressedButton;
+}
+
+boolean VoltageDividerInputDetection::hasInput(){
+    return _hasInput;
+}
+
+/** Printer threshold values for the buttons in the voltage divider for testing purposes */
 void VoltageDividerInputDetection::printDividerRes(){
 
         Serial.println(analogRead(_analogInput));

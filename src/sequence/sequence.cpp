@@ -6,8 +6,11 @@ SequenceArray::SequenceArray() {
     _size = 0;
 }   
 
-void SequenceArray::addToSequence(byte element) {
-    byte* newArray = new byte[_size + 1];
+void SequenceArray::addToSequence() {
+    int randomIndex = (byte)random(0,4);
+    String element = colors[randomIndex];
+
+    String* newArray = new String[_size + 1];
     
     for (int i = 0; i < _size; i++) {
         newArray[i] = _array[i];
@@ -20,9 +23,9 @@ void SequenceArray::addToSequence(byte element) {
     _size++;
 }
 
-byte SequenceArray::getLastElement() {
+String SequenceArray::getLastElement() {
     if (_size > 0) {
         return _array[_size - 1];
     }
-    return byte(-1); // Return -1 if the sequence is empty
+    return String(""); // Return -1 if the sequence is empty
 }

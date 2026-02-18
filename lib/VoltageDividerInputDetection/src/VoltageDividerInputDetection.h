@@ -3,8 +3,9 @@
 
 #include <Arduino.h>
 #include "PushButton.h"
+#include "Led.h"
 
-struct Buttons {
+struct Button {
   String label;
   int lowerThresholdValue;
   int upperThresholdValue;
@@ -19,12 +20,16 @@ class VoltageDividerInputDetection {
     int *_dividerResistorValues;
     const double _threshold = 50; //Threshold for range of values to take into account fluctuation on vOut.
     int _nrOfButtons;
-    Buttons *_buttons;
-    int _lastPressedButton = -1;
+    Button *_buttons;
+    Button _lastPressedButton;
+    bool _hasInput = false;
+    Led *_leds;
 
   public:
     VoltageDividerInputDetection(byte, int, int*, int);
     void read();
+    bool hasInput();
+    Button getPressedButton();
     void printDividerRes();
    
 };

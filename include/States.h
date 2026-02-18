@@ -1,0 +1,15 @@
+#ifndef STATES_H
+#define STATE_H
+
+enum class States : uint8_t {
+START_UP,
+MENU,
+NEW_SEQUENCE_ADD,
+NEW_SEQUENCE_LED,
+PLAYER_INPUT,
+PLAYER_VERIFY,
+END_GAME
+};
+
+#endif
+
