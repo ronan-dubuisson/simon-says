@@ -1,7 +1,3 @@
 #include "Led.h"
 
-Led::Led(byte pinNumber, LedLabels label) : DigitalPin(pinNumber, OUTPUT), _label(label) {}
-
-LedLabels Led::getLabel(){
-    return _label;
-}
+Led::Led(byte pinNumber, int id) : DigitalPin(pinNumber, OUTPUT), _id(id) {}

@@ -3,14 +3,12 @@
 
 #include <Arduino.h>
 #include "DigitalPin.h"
-#include "enums/ledLabels.h"
 
 class Led : public DigitalPin<Led>{
     public:
-        Led(byte, LedLabels);
-        LedLabels getLabel();
+        Led(byte, int);
     private:
-        LedLabels _label;
+        int _id;
 };
 
 

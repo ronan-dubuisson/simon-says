@@ -1,23 +1,20 @@
-//#include <Arduino.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
+#include <Arduino.h>
 #include <Adafruit_SSD1306.h>
+#include <Adafruit_GFX.h>
+#include <Wire.h>
 #include "VoltageDividerInputDetection.h"
 #include "enums/game.h"
 #include "Led.h"
 #include "PushButton.h"
 #include "enums/ledLabels.h"
 
-// OLED display configuration
-const int SCREEN_WIDTH = 128 ;// OLED display width, in pixels
-const int SCREEN_HEIGHT = 64 ;// OLED display height, in pixels
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1); // -1 means no reset pin
+Adafruit_SSD1306 display(128, 64, &Wire, -1); // Initialize display with width, height
 
 Led leds[4] = {
-  Led(4, LedLabels::RED),
-  Led(5, LedLabels::GREEN),
-  Led(6, LedLabels::BLUE),
-  Led(7, LedLabels::YELLOW)
+  Led(4, (int) LedLabels::RED),
+  Led(5, (int) LedLabels::GREEN),
+  Led(6, (int)LedLabels::YELLOW),
+  Led(7, (int) LedLabels::BLUE)
 };
 
 PushButton resetButton(2, "Reset button");
@@ -35,20 +32,15 @@ int pullDownResistor = 10000;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+
   state = States::START_UP;
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // 0x3C is common I2C address
     for(;;); // Don't proceed, loop forever
   }
-
   display.clearDisplay();
- 
-  display.setTextSize(2);
+  display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 30);
-  display.println("SIMON SAYS");
-  display.display();  // Actually push data to the screen
-
 
   // attachInterrupt(digitalPinToInterrupt(resetBtn), [](){
   //   // Interrupt service routine for reset button
@@ -63,17 +55,26 @@ void loop() {
 
   switch(state) {
     case States::START_UP:
-      simon.startNewGame();
-      state = States::COMPUTER_TURN;
+      display.setCursor(0, 15);
+      display.println("Simon Says");
+      display.display();
+      // Start dimming the display
+     // Welcome led animation
+     // After initialization, transition to the menu state
+      state = States::MENU;
       break;
+    case States::MENU:
+      // Display menu options, wait for user input to start the game
+      state = States::COMPUTER_TURN;
+    break;
     case States::PLAYER_TURN:
-      simon._playerInput.read();
+      vd.read();
     break;
     case States::COMPUTER_TURN:
-        simon.newColorSequence();
+        // Computer generates a sequence and displays it
         state = States::PLAYER_TURN;
     case States::END_GAME:
-      simon.resetGame();
+      //Reset game state, display end game message, etc.
     break;
   }
 }
