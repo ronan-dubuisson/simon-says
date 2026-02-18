@@ -6,10 +6,11 @@
 
 class PushButton : public DigitalPin<PushButton>{
     public:
-        PushButton(byte);
+        PushButton(byte, String);
         
     private:
         bool _lastState;
+        String _label;
 
 };
 

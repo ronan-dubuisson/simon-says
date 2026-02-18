@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "DigitalPin.h"
-#include "ledLabels/ledLabels.h"
+#include "enums/ledLabels.h"
 
 class Led : public DigitalPin<Led>{
     public:

@@ -3,15 +3,16 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "VoltageDividerInputDetection.h"
-#include "states/States.h"
+#include "enums/game.h"
 #include "Led.h"
-#include "ledLabels/ledLabels.h"
+#include "PushButton.h"
+#include "enums/ledLabels.h"
 
+// OLED display configuration
 const int SCREEN_WIDTH = 128 ;// OLED display width, in pixels
 const int SCREEN_HEIGHT = 64 ;// OLED display height, in pixels
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1); // -1 means no reset pin
 
-// game leds intialization
 Led leds[4] = {
   Led(4, LedLabels::RED),
   Led(5, LedLabels::GREEN),
@@ -19,9 +20,13 @@ Led leds[4] = {
   Led(7, LedLabels::YELLOW)
 };
 
-//voltage divider input detection initialization
-VoltageDividerInputDetection vd(A0, 10000, );
-byte resetBtn = 2; //5 seconds reset wait time
+PushButton resetButton(2, "Reset button");
+
+//voltage divider load resistors for player input detection
+int dividerResistors[] = {3000, 6800, 22000};
+VoltageDividerInputDetection vd(A0, 10000, dividerResistors, sizeof(dividerResistors) / sizeof(dividerResistors[0]) + 1);
+
+
 States state;
 
 //voltageDivider transistors
@@ -59,15 +64,14 @@ void loop() {
   switch(state) {
     case States::START_UP:
       simon.startNewGame();
-      simon.currentState = Game::COMPUTER_TURN;
+      state = States::COMPUTER_TURN;
       break;
     case States::PLAYER_TURN:
       simon._playerInput.read();
     break;
     case States::COMPUTER_TURN:
         simon.newColorSequence();
-        simon.currentState = Game::PLAYER_TURN;
-      break;
+        state = States::PLAYER_TURN;
     case States::END_GAME:
       simon.resetGame();
     break;
