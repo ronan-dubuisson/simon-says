@@ -4,7 +4,7 @@
 int dividerResistors[] = {3000, 6800, 22000};
 
 Game::Game(byte ledPins[], byte playerInputPin) :
-  _leds{Led(ledPins[0]), Led(ledPins[1]), Led(ledPins[2]), Led(ledPins[3])},
+  _leds{Led(ledPins[0], "RED"), Led(ledPins[1], "GREEN"), Led(ledPins[2], "YELLOW"), Led(ledPins[3],"BLUE")},
   _playerInput(playerInputPin, 10000, dividerResistors, sizeof(dividerResistors) / sizeof(dividerResistors[0]) + 1)
 {
 }
@@ -74,8 +74,24 @@ void Game::resetGame() {
  * public method to start a new color sequence
  */
 void Game::newColorSequence() {
-   _sequenceArray.addToSequence((byte)random(0,4));
-   _leds[_sequenceArray.getLastElement()].update(HIGH);
-    delay(_sequenceDuration);
-    _leds[_sequenceArray.getLastElement()].update(LOW);
+   _sequenceArray.addToSequence();
+
+   for(Led led : _leds){
+    if(led.getLabel()==_sequenceArray.getLastElement()){
+      led.update(HIGH);
+      delay(_sequenceDuration);
+      led.update(LOW);
+    }
+   }
+}
+
+/**
+ * Verify sequence
+ */
+bool Game::verifySequence(String pressedButton){
+  if(_sequenceArray.getLastElement() == pressedButton){
+    return true;
+  } else {
+    return false;
+  }
 }

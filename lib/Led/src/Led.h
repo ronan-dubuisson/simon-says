@@ -6,7 +6,10 @@
 
 class Led : public DigitalPin<Led>{
     public:
-        Led(byte);
+        Led(byte, String);
+        String getLabel();
+    private:
+        String _label;
 };
 
 

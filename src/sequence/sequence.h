@@ -5,13 +5,14 @@
 
 class SequenceArray {
   private:
-    byte* _array;
+    String colors[4] = {"RED", "GREEN", "YELLOW", "BLUE"};
+    String* _array;
     int _size;
   public:
     SequenceArray();
     
-    void addToSequence(byte);
-    byte getLastElement();
+    void addToSequence();
+    String getLastElement();
 };
 
 #endif

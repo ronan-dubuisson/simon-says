@@ -28,6 +28,7 @@ public:
   void startNewGame();
   void resetGame();
   void newColorSequence();
+  bool verifySequence(String pressedButton);
 
   boolean isReset;
 };
