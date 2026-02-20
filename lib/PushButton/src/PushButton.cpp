@@ -1,3 +1,3 @@
 #include "PushButton.h"
 
-PushButton::PushButton(byte pinNumber, String label) : _label(label), DigitalPin(pinNumber, INPUT){}
+PushButton::PushButton(byte pinNumber) : DigitalPin(pinNumber, INPUT){}

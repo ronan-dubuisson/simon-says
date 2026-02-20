@@ -17,7 +17,7 @@ Adafruit_SSD1306 display(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire, -1); // Initializ
 const uint8_t ledPins[LED_COUNT] = {4, 5, 6, 7}; // Example LED pins
 LedAnimator animator; // Initialize with LED pins
 
-PushButton resetButton(2, "Reset button");
+PushButton resetButton(2);
 
 //voltage divider pulldown and load resistors for player input detection
 int pullDownResistor = 10000;
