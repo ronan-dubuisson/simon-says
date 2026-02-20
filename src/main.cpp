@@ -6,28 +6,25 @@
 #include "enums/game.h"
 #include "Led.h"
 #include "PushButton.h"
-#include "enums/ledLabels.h"
+#include "ledAnimations/ledAnimations.h"
+#include "ledAnimations/animations.h"
 
-Adafruit_SSD1306 display(128, 64, &Wire, -1); // Initialize display with width, height
+#define LED_COUNT 4
+#define DISPLAY_WIDTH 128
+#define DISPLAY_HEIGHT 64
 
-Led leds[4] = {
-  Led(4, (int) LedLabels::RED),
-  Led(5, (int) LedLabels::GREEN),
-  Led(6, (int)LedLabels::YELLOW),
-  Led(7, (int) LedLabels::BLUE)
-};
+Adafruit_SSD1306 display(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire, -1); // Initialize display with width, height
+const uint8_t ledPins[LED_COUNT] = {4, 5, 6, 7}; // Example LED pins
+LedAnimator animator; // Initialize with LED pins
 
 PushButton resetButton(2, "Reset button");
 
-//voltage divider load resistors for player input detection
+//voltage divider pulldown and load resistors for player input detection
+int pullDownResistor = 10000;
 int dividerResistors[] = {3000, 6800, 22000};
 VoltageDividerInputDetection vd(A0, 10000, dividerResistors, sizeof(dividerResistors) / sizeof(dividerResistors[0]) + 1);
 
-
 States state;
-
-//voltageDivider transistors
-int pullDownResistor = 10000;
 
 void setup() {
   // put your setup code here, to run once:
@@ -48,20 +45,23 @@ void setup() {
   // }, HIGH);
 }
 
-
 void loop() {
 
   // put your main code here, to run repeatedly:
 
   switch(state) {
     case States::START_UP:
+      if(!animator.loaded()) {
+        animator.load(welcomeAnimation, ledPins, 150);
+      }
+      if(animator.nextFrame()) {
+        animator.update();
+      }
       display.setCursor(0, 15);
       display.println("Simon Says");
       display.display();
-      // Start dimming the display
-     // Welcome led animation
      // After initialization, transition to the menu state
-      state = States::MENU;
+      //state = States::MENU;
       break;
     case States::MENU:
       // Display menu options, wait for user input to start the game

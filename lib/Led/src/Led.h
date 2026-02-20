@@ -6,9 +6,7 @@
 
 class Led : public DigitalPin<Led>{
     public:
-        Led(byte, int);
-    private:
-        int _id;
+        Led(uint8_t);
 };
 
 

@@ -7,7 +7,7 @@ template<class T>
 class DigitalPin{
 protected:
     // pin number and mode (INPUT, OUTPUT, etc.)
-    byte _pinNumber;
+    uint8_t _pinNumber;
     byte _mode;
 
     // debounce variables for input pins

@@ -1,3 +1,3 @@
 #include "Led.h"
 
-Led::Led(byte pinNumber, int id) : DigitalPin(pinNumber, OUTPUT), _id(id) {}
+Led::Led(uint8_t pinNumber) : DigitalPin(pinNumber, OUTPUT) {}
